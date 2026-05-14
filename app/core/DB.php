@@ -265,4 +265,20 @@ class DB {
         }
         return $status;
     }
+
+    /**
+     * Check if core system tables exist.
+     */
+    public static function isInstalled() {
+        try {
+            $tables = self::pdo()->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
+            $core = array_map('trim', explode(',', $_ENV['CORE_TABLES'] ?? 'users, settings'));
+            foreach ($core as $t) {
+                if (!in_array($t, $tables)) return false;
+            }
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

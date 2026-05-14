@@ -171,3 +171,39 @@ if (!function_exists('numberToEnglishWords')) {
         return $words . ' Only';
     }
 }
+
+/**
+ * Encrypt data using the system key.
+ */
+if (!function_exists('encrypt')) {
+    function encrypt($data) {
+        $key = $_ENV['ENCRYPTION_KEY'] ?? '';
+        $iv = $_ENV['ENCRYPTION_IV'] ?? '';
+        if (!$key || !$iv) return $data;
+        
+        $method = 'aes-256-cbc';
+        $key = substr(hash('sha256', $key), 0, 32);
+        $iv = substr(hash('sha256', $iv), 0, 16);
+        
+        $encrypted = openssl_encrypt($data, $method, $key, 0, $iv);
+        return base64_encode($encrypted);
+    }
+}
+
+/**
+ * Decrypt data using the system key.
+ */
+if (!function_exists('decrypt')) {
+    function decrypt($data) {
+        $key = $_ENV['ENCRYPTION_KEY'] ?? '';
+        $iv = $_ENV['ENCRYPTION_IV'] ?? '';
+        if (!$key || !$iv) return $data;
+        
+        $method = 'aes-256-cbc';
+        $key = substr(hash('sha256', $key), 0, 32);
+        $iv = substr(hash('sha256', $iv), 0, 16);
+        
+        $decrypted = openssl_decrypt(base64_decode($data), $method, $key, 0, $iv);
+        return $decrypted;
+    }
+}

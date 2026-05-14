@@ -64,9 +64,10 @@ class Auth {
      */
     public static function checkAccess($route) {
         $route = '/' . trim($route, '/');
-        $openRoutes = ['/auth/login', '/auth/signup', '/auth/forgot-password', '/auth/reset-password'];
-        if (isset($_ENV['OPEN_ROUTES'])) {
-            $openRoutes = array_merge($openRoutes, array_map('trim', explode(',', $_ENV['OPEN_ROUTES'])));
+        $openRoutes = ['/auth/login', '/auth/signup', '/auth/forgot-password', '/auth/reset-password', '/404'];
+        if (!empty($_ENV['OPEN_ROUTES'])) {
+            $customOpen = array_map('trim', explode(',', $_ENV['OPEN_ROUTES']));
+            $openRoutes = array_unique(array_merge($openRoutes, $customOpen));
         }
 
         if (in_array($route, $openRoutes) || strpos($route, '/api/') === 0 || strpos($route, '/print/') === 0) return true;
@@ -74,7 +75,8 @@ class Auth {
         if (!self::isLoggedIn()) return false;
         
         $user = self::user();
-        if (($user['username'] ?? '') === 'admin') return true;
+        $superUsers = array_map('trim', explode(',', $_ENV['SUPER_USERS'] ?? 'admin'));
+        if (in_array($user['username'] ?? '', $superUsers)) return true;
         
         $allowedSlugs = json_decode($user['allowed_routes'] ?? '[]', true);
         if (!is_array($allowedSlugs)) $allowedSlugs = [];
@@ -104,7 +106,8 @@ class Auth {
     public static function hasAccess($slug) {
         if (!self::isLoggedIn()) return false;
         $user = self::user();
-        if (($user['username'] ?? '') === 'admin') return true;
+        $superUsers = array_map('trim', explode(',', $_ENV['SUPER_USERS'] ?? 'admin'));
+        if (in_array($user['username'] ?? '', $superUsers)) return true;
         
         $allowed = json_decode($user['allowed_routes'] ?? '[]', true);
         return is_array($allowed) && in_array($slug, $allowed);

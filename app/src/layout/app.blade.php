@@ -41,7 +41,9 @@ $useDynamic = ($settings['APP_USE_DYNAMIC_FAVICON'] ?? '0') === '1';
 $faviconData = $useDynamic ? 'data:image/svg+xml;base64,' . base64_encode(trim($svgIcon)) : asset($settings['APP_FAVICON'] ?? ''); $siteName = $settings['APP_NAME'] ?? 'Mini Lara';
 $separator = ' | ';
 $pageTitle = $title ?? ucwords(trim(str_replace(['/', '-', '_'], [' ', ' ', ' '], $cleanRoute)));
-$fullTitle = ($cleanRoute === '/' || $cleanRoute === '/home') ? $siteName : $pageTitle . $separator . $siteName; $showLayout = $showLayout ?? true;
+$isSpecialPage = strpos($cleanRoute, '/auth/') === 0 || in_array($cleanRoute, ['/404', '/500']);
+$showLayout = $showLayout ?? (!$isSpecialPage);
+$fullTitle = ($cleanRoute === '/' || $cleanRoute === '/home') ? $siteName : $pageTitle . $separator . $siteName; 
 $navbarPath = BASE_PATH . '/app/src/layout/navbar.json';
 $menu = file_exists($navbarPath) ? json_decode(file_get_contents($navbarPath), true) : [];
 $isActive = function($url) use ($cleanRoute) {
