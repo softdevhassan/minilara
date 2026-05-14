@@ -1,5 +1,5 @@
 {
-  "name": "minilara/ml",
+  "name": "minilara/minilara",
   "description": "Professional-grade, lightweight PHP business management boilerplate. Built with Laravel 13 components, FastRoute, and Tailwind 4. Designed for rapid ERP/CRM development.",
   "keywords": [
     "php framework",
