@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Dashboard",
+        "url": "/home",
+        "icon": "ri-dashboard-line",
+        "permission": "home"
+    },
+    {
+        "title": "System",
+        "icon": "ri-shield-user-line",
+        "children": [
+            {
+                "title": "Users",
+                "url": "/users",
+                "icon": "ri-group-line",
+                "permission": "users"
+            },
+            {
+                "title": "Settings",
+                "url": "/settings",
+                "icon": "ri-settings-4-line",
+                "permission": "settings"
+            }
+        ]
+    }
+]

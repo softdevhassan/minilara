@@ -1,0 +1,48 @@
+# -------------------------------------------------------------------
+# Dependency Directories
+# -------------------------------------------------------------------
+/node_modules
+/vendor
+/app/public/build
+# -------------------------------------------------------------------
+# Environment & Configuration
+# -------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# -------------------------------------------------------------------
+# Logs & Cache
+# -------------------------------------------------------------------
+*.log
+/scratch/
+/app/cache/*
+!/app/cache/.gitkeep
+
+# -------------------------------------------------------------------
+# Vite Build Output
+# -------------------------------------------------------------------
+/app/public/build/
+/app/public/hot
+
+# -------------------------------------------------------------------
+# User Uploads & Media
+# -------------------------------------------------------------------
+/app/public/uploads/*
+!/app/public/uploads/.gitkeep
+!/app/public/uploads/branding/
+/app/public/uploads/branding/*
+!/app/public/uploads/branding/.gitkeep
+!/app/public/uploads/properties/
+/app/public/uploads/properties/*
+!/app/public/uploads/properties/.gitkeep
+
+# -------------------------------------------------------------------
+# OS & IDE Files
+# -------------------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.sqlite
+*.sql

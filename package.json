@@ -1,0 +1,44 @@
+{
+  "name": "mini-lara",
+  "version": "1.1.0",
+  "description": "Professional Business Management Boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "erp",
+    "crm",
+    "boilerplate",
+    "php",
+    "tailwind",
+    "alpinejs"
+  ],
+  "author": "SoftDev Hassan",
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@alpinejs/collapse": "^3.15.12",
+    "@tailwindcss/vite": "^4.2.4",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.13",
+    "prettier": "^3.8.3",
+    "prettier-plugin-blade": "^3.1.6",
+    "tailwindcss": "4",
+    "vite": "^8.0.10",
+    "vite-plugin-full-reload": "^1.2.0"
+  },
+  "dependencies": {
+    "@fontsource/noto-nastaliq-urdu": "^5.2.8",
+    "@fontsource/rubik": "^5.2.8",
+    "alpinejs": "^3.15.12",
+    "aos": "^2.3.4",
+    "axios": "^1.6.0",
+    "chart.js": "^4.4.0",
+    "jquery": "^4.0.0",
+    "remixicon": "^4.9.1",
+    "select2": "4.1.0-rc.0"
+  }
+}

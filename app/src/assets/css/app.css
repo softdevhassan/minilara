@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+/* Third-party Assets */
+@import "../../../node_modules/remixicon/fonts/remixicon.css";
+@import "../../../node_modules/select2/dist/css/select2.min.css";
+@import "../../../node_modules/aos/dist/aos.css";
+
+/* Fonts */
+@import "../../../node_modules/@fontsource/rubik/400.css";
+@import "../../../node_modules/@fontsource/rubik/500.css";
+@import "../../../node_modules/@fontsource/rubik/600.css";
+@import "../../../node_modules/@fontsource/rubik/700.css";
+@import "../../../node_modules/@fontsource/rubik/900.css";
+@import "../../../node_modules/@fontsource/noto-nastaliq-urdu/400.css";
+@import "../../../node_modules/@fontsource/noto-nastaliq-urdu/700.css";
+
+@theme {
+  --color-tp: var(--tp);
+  --color-ts: var(--ts);
+  --color-bp: var(--bp);
+  --color-bs: var(--bs);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+
+  --font-rubik: "Rubik", sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+}
+
+@layer base {
+  :root {
+    --tp: #ffffff;
+    --ts: #f8fafc;
+    --bp: #020617;
+    --bs: #0f172a;
+    --accent: #007D65;
+    --accent-light: #00a884;
+    --accent-dark: #005c4b;
+    
+    --tp-rgb: 255, 255, 255;
+    --ts-rgb: 248, 250, 252;
+    --bp-rgb: 2, 6, 23;
+    --bs-rgb: 15, 23, 42;
+    --accent-rgb: 0, 125, 101;
+  }
+
+  body {
+    @apply bg-bp text-tp antialiased font-rubik;
+  }
+
+  @keyframes pageFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  button, 
+  a, 
+  select, 
+  input[type="submit"], 
+  input[type="button"],
+  [role="button"],
+  .cursor-pointer {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .luxury-card {
+    @apply bg-bs/40 border border-ts/10 rounded-2xl transition-colors duration-200;
+  }
+  .luxury-card:hover {
+    @apply border-accent/40 bg-bs/60;
+  }
+
+  .luxury-input {
+    @apply bg-bp/50 border border-ts/10 rounded-xl px-4 py-3 outline-none transition-colors duration-200 text-sm text-tp placeholder:text-ts/50;
+    background-color: var(--bp); /* Force background to match theme */
+    color: var(--tp);
+  }
+  .luxury-input:focus {
+    @apply border-accent;
+  }
+  .luxury-input:disabled {
+    @apply bg-bp/30 border-ts/5 opacity-50 cursor-not-allowed !bg-bs/50;
+    background-color: rgba(var(--bs-rgb), 0.5) !important;
+  }
+
+  .luxury-button {
+    @apply rounded-xl px-6 py-3 font-semibold transition-colors duration-200 inline-flex items-center justify-center gap-2 border border-transparent text-[13px] uppercase tracking-wider;
+  }
+  .luxury-button-primary {
+    @apply bg-accent text-bp hover:bg-accent-light;
+  }
+
+  .animate-page-fade {
+    animation: pageFadeIn 0.4s ease-out forwards;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Select2 Dark Theme Overrides */
+.select2-container--default .select2-selection--single {
+    @apply bg-bp/50 border border-accent/30 rounded-xl h-11 flex items-center px-4 transition-colors duration-200;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    @apply text-tp text-sm font-semibold p-0;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    @apply h-11 right-3 flex items-center;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    @apply border-tp/20 border-t-4 border-x-transparent border-x-[5px] border-b-0;
+}
+.select2-container--default.select2-container--open .select2-selection--single {
+    @apply border-accent;
+}
+
+.select2-dropdown {
+    @apply bg-bs border border-white/10 rounded-xl shadow-2xl overflow-hidden mt-1;
+}
+.select2-search--dropdown {
+    @apply p-3 bg-bp/30;
+}
+.select2-search--dropdown .select2-search__field {
+    @apply bg-bp/50 border border-white/10 rounded-lg text-tp text-xs px-3 py-2 outline-none focus:border-accent transition-colors;
+}
+.select2-results__option {
+    @apply px-4 py-2.5 text-ts text-xs font-semibold transition-colors;
+}
+.select2-results__option--highlighted[aria-selected] {
+    @apply !bg-accent !text-white;
+}
+.select2-results__option[aria-selected=true] {
+    @apply bg-accent/10 text-accent;
+}
+.select2-container--default .select2-results__option--selected {
+    @apply bg-accent/20;
+}
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    @apply bg-bp/30 border-white/5 opacity-50;
+    background-color: rgba(var(--bp-rgb), 0.3) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    @apply text-ts/50;
+}
+
+/* Multi-Select Luxury Overrides */
+.select2-container--default .select2-selection--multiple {
+    @apply bg-bp/50 border border-white/10 rounded-xl min-h-11 flex items-center px-2 transition-colors duration-200;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    @apply border-accent;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    @apply bg-accent/10 border border-accent/20 rounded-lg px-3 py-1 text-[10px] font-bold text-accent uppercase flex items-center gap-2 m-1;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    @apply text-accent hover:text-accent-light border-0 bg-transparent p-0 mr-0 transition-colors;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    @apply pl-0;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__overflow {
+    @apply flex flex-wrap;
+}
+
+/* Custom Native Date Picker Icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: var(--tp);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M19,4H18V2H16V4H8V2H6V4H5A2.006,2.006,0,0,0,3,6V20a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V6A2.006,2.006,0,0,0,19,4Zm0,16H5V10H19ZM19,8H5V6H19Z"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M19,4H18V2H16V4H8V2H6V4H5A2.006,2.006,0,0,0,3,6V20a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V6A2.006,2.006,0,0,0,19,4Zm0,16H5V10H19ZM19,8H5V6H19Z"/></svg>');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}

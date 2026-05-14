@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Block access to .env files
+RewriteRule ^\.env$ - [R=403,L,NC]
+
+# Send everything else to index.php if not a real file/folder
+# We don't need RewriteBase if index.php is in the same folder as .htaccess
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L,QSA]
