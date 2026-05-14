@@ -25,43 +25,45 @@ class Installer {
         $io->writeln("Project Name set to: <info>$appName</info>");
 
         // 3. Database Configuration
-        if ($io->confirm("Would you like to configure the database now?", true)) {
-            $dbHost = $io->ask("Database Host", "localhost");
+        if ($io->confirm("Configure database?", true)) {
             $dbName = $io->ask("Database Name", $folderName);
-            $dbUser = $io->ask("Database User", "root");
-            $dbPass = $io->ask("Database Password", "");
+            $dbHost = "localhost";
+            $dbUser = "root";
+            $dbPass = "";
 
             self::updateEnv('DB_SERVER', $dbHost);
             self::updateEnv('DB_NAME', $dbName);
             self::updateEnv('DB_USER', $dbUser);
             self::updateEnv('DB_PASS', $dbPass);
 
-            // Test Connection
             try {
                 $pdo = new \PDO("mysql:host=$dbHost", $dbUser, $dbPass);
                 $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                $io->success("Database '$dbName' verified/created.");
+                $io->success("Database '$dbName' ready.");
                 
-                // Run Migrations (Silent call to ML tool)
-                $io->note("Running initial migrations and seeding...");
-                passthru("php ml --task=reset --no-interaction");
-                
+                if ($io->confirm("Install default Schema & Seeding?", true)) {
+                    $io->note("Applying database structure...");
+                    passthru("php ml db:manage --task=reset --no-interaction");
+                }
             } catch (\Exception $e) {
-                $io->error("Database connection failed: " . $e->getMessage());
-                $io->warning("You will need to configure .env manually and run 'php ml' later.");
+                $io->error("DB Error: " . $e->getMessage());
             }
         }
 
-        // 4. Generate Key
+        // 4. Package Installation
+        if ($io->confirm("Run 'pnpm install' now?", false)) {
+            $io->note("Installing frontend dependencies...");
+            passthru("pnpm install");
+        }
+
+        // 5. Generate Key
         $key = bin2hex(random_bytes(16));
         self::updateEnv('ML_ENC_KEY', $key);
-        $io->success("Application Encryption Key generated.");
 
         $io->section("Installation Complete!");
         $io->writeln("Next steps:");
-        $io->writeln("1. Run <comment>pnpm install</comment>");
-        $io->writeln("2. Run <comment>pnpm dev</comment>");
-        $io->writeln("3. Login at /auth/login (Admin / admin)");
+        $io->writeln("1. Run <comment>php ml serve</comment> (Starts PHP & Vite)");
+        $io->writeln("2. Login at <info>/auth/login</info> (Admin / admin)");
         
         return 0;
     }

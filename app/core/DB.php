@@ -225,11 +225,17 @@ class DB {
      */
     public static function migrate($output = null, $force = false) {
         if ($force) self::wipe($output);
-        $files = glob(BASE_PATH . '/app/database/migrations/*.sql');
-        sort($files);
-        foreach ($files as $file) {
-            self::pdo()->exec(file_get_contents($file));
-            if ($output) $output->writeln("- Applied: " . basename($file));
+
+        // 1. Apply Schema from schema.php
+        $schemaPath = BASE_PATH . '/app/database/schema.php';
+        if (file_exists($schemaPath)) {
+            $schema = require $schemaPath;
+            foreach ($schema as $table => $definition) {
+                if (isset($definition['sql'])) {
+                    self::pdo()->exec($definition['sql']);
+                    if ($output) $output->writeln("- Schema Created: $table");
+                }
+            }
         }
     }
 
