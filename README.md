@@ -29,7 +29,6 @@ composer create-project softdevhassan/minilara your-app-name
 
 ## Authors
 - **Hassan Ali**
-- **Email**: [softdevhassan.biz@gmail.com](mailto:softdevhassan.biz@gmail.com)
 - **Links**: [linktr.ee/softdevhassan](https://linktr.ee/softdevhassan)
 
 ## License
