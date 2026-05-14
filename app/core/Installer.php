@@ -79,6 +79,6 @@ class Installer {
             $content .= "\n$key=\"$value\"";
         }
         
-        file_get_contents(file_put_contents($envFile, $content));
+        file_put_contents($envFile, $content);
     }
 }
