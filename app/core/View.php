@@ -63,9 +63,9 @@ class View {
 
     public static function render($view, $data = []) {
         if (!self::$factory) {
-            $pagesPath = realpath(BASE_PATH . '/app/src/pages');
-            $srcPath = realpath(BASE_PATH . '/app/src');
-            $cachePath = realpath(BASE_PATH . '/app/cache');
+            $pagesPath = BASE_PATH . '/app/src/pages';
+            $srcPath = BASE_PATH . '/app/src';
+            $cachePath = BASE_PATH . '/app/cache';
             if (!is_dir($cachePath)) mkdir($cachePath, 0777, true);
             self::init([$pagesPath, $srcPath], $cachePath);
         }
