@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="lg:col-span-1">
                     <div class="luxury-card p-4 text-center">
                         <div class="relative inline-block group">
-                            <div class="w-32 h-32 rounded-3xl bg-bs border-2 border-ts/10 overflow-hidden mb-4 mx-auto flex items-center justify-center">
+                            <div class="w-32 h-32 rounded-full bg-bs border-2 border-ts/10 overflow-hidden mb-4 mx-auto flex items-center justify-center">
                                 @if(!empty($userData['image']))
                                     <img id="avatar_preview" src="{{ asset($userData['image']) }}" class="w-full h-full object-cover" />
                                 @else
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 @endif
                             </div>
                             <input type="file" name="image" id="avatar_upload" class="hidden" accept="image/*" onchange="previewAvatar(this)" />
-                            <label for="avatar_upload" class="absolute bottom-2 right-2 w-10 h-10 bg-accent text-bp rounded-xl flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
+                            <label for="avatar_upload" class="absolute bottom-2 right-2 w-10 h-10 bg-accent text-bp rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
                                 <i class="ri-pencil-line text-lg"></i>
                             </label>
                         </div>

@@ -74,7 +74,7 @@ $user_perms = json_decode($user['allowed_routes'] ?? '[]', true) ?: [];
                     </div>
                     
                     <div class="relative inline-block mb-6">
-                        <div class="w-32 h-32 rounded-3xl bg-bs border border-ts/10 flex items-center justify-center overflow-hidden mx-auto">
+                        <div class="w-32 h-32 rounded-full bg-bs border border-ts/10 flex items-center justify-center overflow-hidden mx-auto">
                             @if(!empty($user['image']))
                                 <img id="avatar_preview" src="{{ asset($user['image']) }}" class="w-full h-full object-cover" />
                             @else
@@ -85,7 +85,7 @@ $user_perms = json_decode($user['allowed_routes'] ?? '[]', true) ?: [];
                             @endif
                         </div>
                         <input type="file" name="image" id="avatar_input" class="hidden" accept="image/*" onchange="previewAvatar(this)" />
-                        <label for="avatar_input" class="absolute -bottom-2 -right-2 w-10 h-10 bg-accent text-bp rounded-xl flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 transition-transform">
+                        <label for="avatar_input" class="absolute -bottom-2 -right-2 w-10 h-10 bg-accent text-bp rounded-full flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 transition-transform">
                             <i class="ri-pencil-line text-lg"></i>
                         </label>
                     </div>
@@ -136,7 +136,7 @@ $user_perms = json_decode($user['allowed_routes'] ?? '[]', true) ?: [];
                                 @php if($slug === 'home') continue; @endphp
                                 <label class="flex items-center gap-3 p-3 bg-bs/50 border border-ts/5 rounded-xl cursor-pointer hover:border-accent/30 transition-all group">
                                     <input type="checkbox" name="permissions[]" value="{{ $slug }}" class="w-4 h-4 rounded border-ts/20 text-accent focus:ring-accent/30" {{ in_array($slug, $user_perms) ? 'checked' : '' }} />
-                                    <span class="text-[10px] font-bold uppercase tracking-wider group-hover:text-accent transition-colors">{{ str_replace('-', ' ', $slug) }}</span>
+                                    <span class="text-[10px] font-bold uppercase group-hover:text-accent transition-colors">{{ str_replace('-', ' ', $slug) }}</span>
                                 </label>
                             @endforeach
                         </div>

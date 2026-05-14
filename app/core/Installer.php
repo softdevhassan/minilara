@@ -63,7 +63,7 @@ class Installer {
         $io->section("Installation Complete!");
         $io->writeln("Next steps:");
         $io->writeln("1. Run <comment>cd " . $folderName . "</comment>");
-        $io->writeln("2. Run <comment>php ml serve</comment> (Starts PHP & Vite)");
+        $io->writeln("2. Run <comment>php ml run</comment> (Starts PHP & Vite)");
         $io->writeln("3. Login at <info>/auth/login</info> (Admin / admin)");
         
         return 0;

@@ -31,8 +31,6 @@ $settings = [
     ['PRINT_REPORT_PADDING_TOP', '1.5in'],
     ['DEVELOPER_NAME', $_ENV['DEVELOPER_NAME'] ?? 'Hassan Ali'],
     ['DEVELOPER_URL', $_ENV['DEVELOPER_URL'] ?? 'https://linktr.ee/softdevhassan'],
-    ['DEVELOPED_BY_COMPANY', $_ENV['DEVELOPED_BY_COMPANY'] ?? 'UpsolTech'],
-    ['DEVELOPED_BY_COMPANY_URL', $_ENV['DEVELOPED_BY_COMPANY_URL'] ?? 'https://www.upsoltech.com/'],
     ['SYSTEM_DEFAULT_COLORS', '{"name":"Enterprise White (Ocean Blue)","tp":"#0f172a","ts":"#4b5563","bp":"#ffffff","bs":"#f9fafb","sb":"#2563eb","sl":"#eff6ff","sh":"#ffffff","sa":"#ffffff","st":"#2563eb","accent":"#2563eb","accent_light":"#60a5fa","accent_dark":"#1d4ed8"}'],
 ];
 foreach ($settings as $s) {

@@ -37,7 +37,7 @@ $application = new Application("Mini Lara CLI", "1.1.0");
 
 // Add Commands
 $application->add(new DatabaseManager());
-$application->add(new \App\ServeCommand());
+$application->add(new \App\RunCommand());
 
 // Set default if no command is provided
 $application->setDefaultCommand('db:manage');

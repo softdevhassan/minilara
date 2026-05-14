@@ -18,6 +18,7 @@ return [
           `allowed_routes` longtext DEFAULT NULL,
           `locked` tinyint(4) NOT NULL DEFAULT 0,
           `color_scheme` text DEFAULT NULL,
+          `created_at` timestamp NULL DEFAULT current_timestamp(),
           `last_updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
           `last_updated_by` int(11) NOT NULL DEFAULT 1,
           PRIMARY KEY (`id`),
@@ -32,6 +33,9 @@ return [
           `value1` text DEFAULT NULL,
           `value2` text DEFAULT NULL,
           `value3` text DEFAULT NULL,
+          `created_at` timestamp NULL DEFAULT current_timestamp(),
+          `last_updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+          `last_updated_by` int(11) NOT NULL DEFAULT 1,
           PRIMARY KEY (`id`),
           UNIQUE KEY `key` (`key`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;"

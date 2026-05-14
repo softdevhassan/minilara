@@ -7,11 +7,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputOption;
 
-class ServeCommand extends Command {
+class RunCommand extends Command {
     protected function configure() {
         $this
-            ->setName('serve')
-            ->setDescription('Start the Mini Lara development server')
+            ->setName('run')
+            ->setDescription('Start the Mini Lara development stack (PHP + Vite)')
             ->addOption('port', 'p', InputOption::VALUE_REQUIRED, 'The port to serve the application on', 8000);
     }
 

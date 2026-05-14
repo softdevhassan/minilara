@@ -87,7 +87,7 @@ $users = DB::table('users')
                                         <div class="relative">
                                             <img
                                                 src="{{ asset($u['image'] ?: '/images/default-avatar.webp') }}"
-                                                class="w-12 h-10 rounded-xl border-2 border-ts/10 object-cover"
+                                                class="w-10 h-10 rounded-full border-2 border-ts/10 object-cover"
                                             />
                                             <div
                                                 class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-bp {{ $u['locked'] ? 'bg-red-500' : 'bg-emerald-500 shadow-sm shadow-emerald-500/50' }}"
@@ -129,7 +129,8 @@ $users = DB::table('users')
                                         </a>
                                         @if ($u['username'] !== 'admin')
                                             <button
-                                                onclick="deleteUser({{ $u['id'] }})"
+                                                data-id="{{ $u['id'] }}"
+                                                onclick="deleteUser(this.dataset.id)"
                                                 class="w-10 h-10 flex items-center justify-center text-ts hover:text-red-600 hover:bg-red-50 rounded-xl border border-ts/10 hover:border-red-500/30 transition-all duration-300"
                                                 title="Revoke & Delete"
                                             >

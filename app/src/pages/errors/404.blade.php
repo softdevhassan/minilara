@@ -30,7 +30,7 @@
         </div>
 
         <div class="pt-16">
-            <p class="text-[10px] font-semibold text-ts uppercase tracking-[0.2em] opacity-40">Mini Lara Business Management</p>
+            <p class="text-[10px] font-semibold text-ts uppercase opacity-40">Mini Lara Business Management</p>
         </div>
     </div>
 </div>

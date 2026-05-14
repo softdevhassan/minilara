@@ -19,8 +19,10 @@ export default defineConfig({
         style: path.resolve(__dirname, 'app/src/assets/css/app.css'),
       },
       output: {
-        manualChunks: {
-          vendor: ['axios', 'chart.js', 'jquery'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         },
       },
     },

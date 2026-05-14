@@ -69,7 +69,7 @@ foreach($menu as $item) { if(isset($item['children'])) { foreach($item['children
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="{{ $settings['APP_TAGLINE'] ?? 'Professional Business Management System' }}" />
     <meta name="keywords" content="ERP, CRM, Business Management, PHP, Tailwind, AlpineJS" />
-    <meta name="author" content="{{ get_setting('DEVELOPER_NAME', 'Mini Lara') }}" />
+    <meta name="author" content="{{ get_setting('DEVELOPER_NAME', 'Hassan Ali') }}" />
     <meta name="view-transition" content="same-origin" />
     <title>{{ $fullTitle }}</title>
     <link rel="icon" href="{{ $faviconData }}" />
@@ -483,18 +483,10 @@ foreach($menu as $item) { if(isset($item['children'])) { foreach($item['children
                             <div x-data="{ profileOpen: false }" class="relative">
                                 <button
                                     @click="profileOpen = !profileOpen"
-                                    class="flex items-center gap-2 py-1.5 px-3 rounded-lg bg-bs border border-ts/10 hover:border-accent/40 transition-colors"
+                                    class="flex items-center justify-center rounded-full hover:ring-2 hover:ring-accent/10 transition-all duration-300"
                                 >
-                                    <div class="text-right hidden sm:block">
-                                        <div class="text-[11px] font-semibold text-tp">
-                                            {{ $user['name'] ?? 'Admin' }}
-                                        </div>
-                                        <div class="text-[9px] font-medium text-ts uppercase">
-                                            {{ $user['role'] ?? 'User' }}
-                                        </div>
-                                    </div>
                                     <div
-                                        class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent overflow-hidden"
+                                        class="w-9 h-9 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent overflow-hidden shadow-sm"
                                     >
                                         @if (!empty($user['image']))
                                             <img src="{{ asset($user['image']) }}" class="w-full h-full object-cover" />
@@ -507,11 +499,17 @@ foreach($menu as $item) { if(isset($item['children'])) { foreach($item['children
                                     x-show="profileOpen"
                                     @click.away="profileOpen = false"
                                     x-cloak
-                                    class="absolute right-0 mt-3 w-56 bg-bs border border-ts/10 rounded-2xl py-2 z-50 ring-1 ring-white/5"
+                                    class="absolute right-0 mt-3 w-56 bg-bs border border-ts/10 rounded-2xl py-2 z-50 shadow-2xl ring-1 ring-white/5"
                                 >
+                                    <!-- User Info Header -->
+                                    <div class="px-4 py-3 border-b border-ts/5 mb-1">
+                                        <div class="text-[14px] font-bold text-tp truncate">{{ $user['name'] ?? 'Admin' }}</div>
+                                        <div class="text-[12px] font-bold text-ts tracking-tight mt-0.5"><span>@</span>{{ $user['username'] ?? 'username' }}</div>
+                                    </div>
+
                                     <a
                                         href="{{ url('/profile') }}"
-                                        class="flex items-center gap-3 px-4 py-3 text-sm text-ts hover:bg-bp hover:text-tp transition-colors group"
+                                        class="flex items-center gap-3 px-4 py-2.5 text-sm text-ts hover:bg-bp hover:text-tp transition-colors group"
                                     >
                                         <i class="ri-user-settings-line group-hover:text-accent"></i>
                                         <span class="font-semibold">My Account</span>
@@ -519,7 +517,7 @@ foreach($menu as $item) { if(isset($item['children'])) { foreach($item['children
                                     <div class="h-px bg-white/5 my-1"></div>
                                     <a
                                         href="{{ url('/auth/logout') }}"
-                                        class="flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-red-500/10 transition-colors group"
+                                        class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-500/10 transition-colors group"
                                     >
                                         <i class="ri-logout-circle-r-line"></i>
                                         <span class="font-semibold">Logout</span>
