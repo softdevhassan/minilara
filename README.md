@@ -1,4 +1,4 @@
-# Mini Lara Industrial - Ultra-Lightweight PHP Framework (v1.3.0)
+# Mini Lara Industrial - Ultra-Lightweight PHP Framework (v1.3.2)
 
 Mini Lara is a high-performance, ultra-minimalist PHP boilerplate designed for industrial-grade business systems (ERP, CRM, Ledger). It combines a **7-file core** architecture with the power of **Laravel 13** components, delivering extreme speed without sacrificing professional features.
 

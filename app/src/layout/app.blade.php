@@ -106,7 +106,7 @@
     <meta name="description" content="{{ $settings['APP_TAGLINE'] ?? 'Professional Business Management System' }}" />
     <meta name="keywords" content="ERP, CRM, Business Management, PHP, Tailwind, AlpineJS" />
     <meta name="author" content="{{ $_ENV['DEVELOPER_NAME'] ?? '' }}" />
-    <meta name="generator" content="Mini Lara v1.3.0 (Industrial Edition)" />
+    <meta name="generator" content="Mini Lara v1.3.2 (Industrial Edition)" />
     <meta name="view-transition" content="same-origin" />
     <title>{{ $fullTitle }}</title>
     <link rel="icon" href="{{ $faviconData }}" />

@@ -9,7 +9,7 @@ class Installer {
     public static function install() {
         $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
 
-        $io->title("Mini Lara v1.3.0 - The Ultimate Industrial Edition");
+        $io->title("Mini Lara v1.3.2 - The Ultimate Industrial Edition");
         $io->note("Welcome to Mini Lara. Let's set up your new application.");
 
         // 1. Setup .env
