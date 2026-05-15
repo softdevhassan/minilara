@@ -39,7 +39,7 @@ try {
 }
 
 // 3. Run Console Application
-$application = new Application("Mini Lara CLI", "1.3.8");
+$application = new Application("Mini Lara CLI", "1.3.9");
 
 // Add Commands
 $application->add(new \App\DatabaseManager());

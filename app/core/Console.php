@@ -86,9 +86,9 @@ class RunCommand extends Command {
         $port = $input->getOption('port');
         $output->writeln("<info>Starting Development Stack (PHP + Vite)...</info>");
         
-        // Start Vite in background (Silent & Stable)
+        // Start Vite in background (popen avoids hanging on Windows)
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            exec("start /B pnpm dev > NUL 2>&1");
+            pclose(popen("start /B pnpm dev > NUL 2>&1", "r"));
         } else {
             exec("pnpm dev > /dev/null 2>&1 &");
         }
