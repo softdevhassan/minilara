@@ -85,7 +85,7 @@ class RunCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $port = $input->getOption('port');
         $output->writeln("<info>Server started at http://localhost:$port</info>");
-        passthru("php -S localhost:$port -t app/public");
+        passthru("php -S localhost:$port");
         return Command::SUCCESS;
     }
 }
