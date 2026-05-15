@@ -1,0 +1,29 @@
+{
+  "name": "Mini Lara Industrial",
+  "short_name": "MiniLara",
+  "description": "Professional Business Management System",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/images/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "notifications",
+    "geolocation"
+  ]
+}

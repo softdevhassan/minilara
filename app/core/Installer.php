@@ -9,7 +9,7 @@ class Installer {
     public static function install() {
         $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
 
-        $io->title("Mini Lara - Professional Installation");
+        $io->title("Mini Lara v1.3.0 - The Ultimate Industrial Edition");
         $io->note("Welcome to Mini Lara. Let's set up your new application.");
 
         // 1. Setup .env
@@ -64,7 +64,7 @@ class Installer {
         $io->writeln("Next steps:");
         $io->writeln("1. Run <comment>cd " . $folderName . "</comment>");
         $io->writeln("2. Run <comment>php ml run</comment> (Starts PHP & Vite)");
-        $io->writeln("3. Login at <info>/auth/login</info> (Admin / admin)");
+        $io->writeln("3. Login at <info>/auth/login</info> (admin / admin)");
         
         return 0;
     }

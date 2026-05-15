@@ -58,6 +58,19 @@ class Router {
                 View::render('errors.404');
             }
         });
+
+        // Standardized Print Routing
+        $this->add(['GET', 'POST'], '/print/{type}/{slug}', function($vars) {
+            $type = $vars['type']; // reports or single
+            $slug = $vars['slug'];
+            $viewPath = "prints.$type.$slug";
+            
+            if (file_exists(BASE_PATH . "/app/src/pages/prints/$type/$slug.blade.php")) {
+                View::render($viewPath);
+            } else {
+                View::render('errors.404');
+            }
+        });
     }
 
     public function run() {
@@ -100,4 +113,15 @@ class Router {
                 break;
         }
     }
+}
+
+/**
+ * Route Facade - Consolidated for Minimalism
+ */
+class Route {
+    private static $router;
+    public static function setRouter($router) { self::$router = $router; }
+    public static function get($uri, $action) { self::$router->add('GET', $uri, $action); }
+    public static function post($uri, $action) { self::$router->add('POST', $uri, $action); }
+    public static function all($uri, $action) { self::$router->add(['GET', 'POST'], $uri, $action); }
 }

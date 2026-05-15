@@ -223,38 +223,17 @@ class DB {
     /**
      * Database Lifecycle Management (Consolidated)
      */
-    public static function migrate($output = null, $force = false) {
-        if ($force) self::wipe($output);
-
-        // 1. Apply Schema from schema.php
-        $schemaPath = BASE_PATH . '/app/database/schema.php';
-        if (file_exists($schemaPath)) {
-            $schema = require $schemaPath;
-            foreach ($schema as $table => $definition) {
-                if (isset($definition['sql'])) {
-                    self::pdo()->exec($definition['sql']);
-                    if ($output) $output->writeln("- Schema Created: $table");
-                }
-            }
-        }
+    public static function migrate($fresh = false) {
+        if ($fresh) MigrationManager::wipe();
+        return MigrationManager::migrate();
     }
 
-    public static function seed($output = null) {
-        $seederPath = BASE_PATH . '/app/database/seeder.php';
-        if (file_exists($seederPath)) {
-            $db = self::pdo();
-            require $seederPath;
-        }
+    public static function seed() {
+        return SeederManager::seed();
     }
 
-    public static function wipe($output = null) {
-        self::pdo()->exec("SET FOREIGN_KEY_CHECKS = 0;");
-        $tables = self::pdo()->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
-        foreach ($tables as $t) {
-            self::pdo()->exec("DROP TABLE IF EXISTS `$t` ");
-            if ($output) $output->writeln("- Dropped: $t");
-        }
-        self::pdo()->exec("SET FOREIGN_KEY_CHECKS = 1;");
+    public static function wipe() {
+        return MigrationManager::wipe();
     }
 
     public static function getStatus() {
@@ -266,19 +245,95 @@ class DB {
         return $status;
     }
 
-    /**
-     * Check if core system tables exist.
-     */
     public static function isInstalled() {
         try {
             $tables = self::pdo()->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
             $core = array_map('trim', explode(',', $_ENV['CORE_TABLES'] ?? 'users, settings'));
-            foreach ($core as $t) {
-                if (!in_array($t, $tables)) return false;
-            }
+            foreach ($core as $t) if (!in_array($t, $tables)) return false;
             return true;
-        } catch (\Exception $e) {
-            return false;
+        } catch (\Exception $e) { return false; }
+    }
+}
+
+/**
+ * Universal Zero-Duplication Model Base
+ */
+class BaseModel extends \Illuminate\Database\Eloquent\Model {
+    protected $guarded = []; public $timestamps = false; 
+    public function __call($m, $p) {
+        $t = $this->getTable(); $sP = BASE_PATH . '/app/database/schema.php';
+        if (file_exists($sP)) {
+            $s = require $sP;
+            if (isset($s[$t]['relations'][$m])) {
+                $r = $s[$t]['relations'][$m];
+                $target = "App\\Models\\" . \Illuminate\Support\Str::studly(\Illuminate\Support\Str::singular($r[1]));
+                return $this->{$r[0]}($target, $r[2]);
+            }
         }
+        return parent::__call($m, $p);
+    }
+}
+
+/**
+ * Migration & Seeding Engine
+ */
+abstract class Migration {
+    protected $schema;
+    public function __construct() { $this->schema = \Illuminate\Database\Capsule\Manager::schema(); }
+    abstract public function up();
+    abstract public function down();
+}
+
+abstract class Seeder {
+    abstract public function run();
+    protected function table($name) { return \Illuminate\Database\Capsule\Manager::table($name); }
+}
+
+class MigrationManager {
+    public static function init() {
+        if (!\Illuminate\Database\Capsule\Manager::schema()->hasTable('migrations')) {
+            \Illuminate\Database\Capsule\Manager::schema()->create('migrations', function ($table) {
+                $table->id(); $table->string('migration'); $table->integer('batch');
+            });
+        }
+    }
+    public static function migrate() {
+        self::init();
+        $files = glob(BASE_PATH . '/app/database/migrations/*.php'); sort($files);
+        $ran = \Illuminate\Database\Capsule\Manager::table('migrations')->pluck('migration')->toArray();
+        $batch = \Illuminate\Database\Capsule\Manager::table('migrations')->max('batch') + 1;
+        $count = 0;
+        foreach ($files as $file) {
+            $name = basename($file, '.php'); if (in_array($name, $ran)) continue;
+            $m = require $file; $m->up();
+            \Illuminate\Database\Capsule\Manager::table('migrations')->insert(['migration' => $name, 'batch' => $batch]);
+            $count++;
+        }
+        return $count;
+    }
+    public static function rollback() {
+        $batch = \Illuminate\Database\Capsule\Manager::table('migrations')->max('batch'); if (!$batch) return 0;
+        $rows = \Illuminate\Database\Capsule\Manager::table('migrations')->where('batch', $batch)->orderBy('id', 'desc')->get();
+        foreach ($rows as $r) {
+            $file = BASE_PATH . "/app/database/migrations/{$r->migration}.php";
+            if (file_exists($file)) (require $file)->down();
+            \Illuminate\Database\Capsule\Manager::table('migrations')->where('id', $r->id)->delete();
+        }
+        return count($rows);
+    }
+    public static function wipe() { 
+        $pdo = \Illuminate\Database\Capsule\Manager::connection()->getPdo();
+        $pdo->exec("SET FOREIGN_KEY_CHECKS = 0;");
+        $tables = $pdo->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
+        foreach ($tables as $t) $pdo->exec("DROP TABLE IF EXISTS `$t` ");
+        $pdo->exec("SET FOREIGN_KEY_CHECKS = 1;");
+    }
+}
+
+class SeederManager {
+    public static function seed($class = null) {
+        $files = $class ? [BASE_PATH . "/app/database/seeds/$class.php"] : glob(BASE_PATH . '/app/database/seeds/*.php');
+        foreach ($files as $file) if (file_exists($file)) (require $file)->run();
+        return count($files);
     }
 }

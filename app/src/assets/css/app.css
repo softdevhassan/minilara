@@ -113,11 +113,68 @@
   scrollbar-width: none;
 }
 
+/* INDUSTRIAL PRINT SYSTEM (BOLD & HIGH CONTRAST) */
 @media print {
-  .no-print {
-    display: none !important;
-  }
+    .no-print { display: none !important; }
+    body { background: white !important; color: black !important; }
+    .a4-container { 
+        margin: 0 !important; 
+        box-shadow: none !important; 
+        width: 100% !important;
+        padding: 15mm !important;
+    }
 }
+
+.a4-container {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 20px auto;
+    background: white;
+    border: 1px solid #b9b9b9;
+    border-radius: 8px;
+}
+
+.print-bar {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+.print-btn-black {
+    background: black;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+}
+
+.print-btn-white {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: black;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+}
+
+.text-huge { font-size: 42px; font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; }
+.border-thick { border-bottom: 3px solid black; }
+.box-black { background: black; color: white; padding: 25px; border-radius: 12px; }
+.box-outline { border: 1px solid black; padding: 25px; border-radius: 12px; }
+.table-header-gray { @apply bg-slate-100 border-y border-black uppercase text-[10px] font-black tracking-widest; }
 
 /* Select2 Dark Theme Overrides */
 .select2-container--default .select2-selection--single {

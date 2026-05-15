@@ -54,21 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Global Commission settings
-    $commission_keys = ['DEFAULT_COMMISSION_TYPE', 'DEFAULT_COMMISSION_VALUE', 'DEFAULT_COMMISSION_FIXED'];
-    foreach ($commission_keys as $key) {
-        if (isset($_POST[$key])) {
-            $val = $_POST[$key];
-            $existingObj = DB::table('settings')->where('key', $key)->first();
-            $existing = $existingObj ? (array)$existingObj : null;
-            if ($existing) {
-                DB::table('settings')->where('key', $key)->update(['value1' => $val]);
-            } else {
-                DB::table('settings')->insert(['key' => $key, 'value1' => $val]);
-            }
-        }
-    }
-
     // Appearance (Personal or System Default)
     if (isset($_POST['color_scheme_mode']) && isset($_POST['color_scheme_data'])) {
         $colorSchemeData = json_decode($_POST['color_scheme_data'], true);
@@ -181,14 +166,6 @@ $initialColors = $colorScheme['colors'] ?? $presets[0];
                 @endif
                 <button
                     type="button"
-                    @click="setTab('commission')"
-                    :class="tab === 'commission' ? 'bg-bp text-accent font-bold border border-accent/20' : 'text-ts font-semibold'"
-                    class="px-4 py-2 rounded-lg text-[10px] uppercase transition-colors whitespace-nowrap"
-                >
-                    Commission
-                </button>
-                <button
-                    type="button"
                     @click="setTab('appearance')"
                     :class="tab === 'appearance' ? 'bg-bp text-accent font-bold border border-accent/20' : 'text-ts font-semibold'"
                     class="px-4 py-2 rounded-lg text-[10px] uppercase transition-colors whitespace-nowrap"
@@ -241,27 +218,6 @@ $initialColors = $colorScheme['colors'] ?? $presets[0];
                         </div>
                     </div>
 
-                    <div class="pt-8 border-t border-ts/5">
-                        <h3 class="text-xs font-semibold text-tp uppercase mb-6">Developer Information</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            <div class="space-y-2.5">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Developer Name</label>
-                                <input type="text" name="DEVELOPER_NAME" value="{{ $settings['DEVELOPER_NAME'] ?? '' }}" class="luxury-input w-full font-bold h-10" />
-                            </div>
-                            <div class="space-y-2.5">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Developer Portfolio URL</label>
-                                <input type="text" name="DEVELOPER_URL" value="{{ $settings['DEVELOPER_URL'] ?? '' }}" class="luxury-input w-full font-bold h-10" placeholder="https://..." />
-                            </div>
-                            <div class="space-y-2.5">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Company Name</label>
-                                <input type="text" name="DEVELOPED_BY_COMPANY" value="{{ $settings['DEVELOPED_BY_COMPANY'] ?? '' }}" class="luxury-input w-full font-bold h-10" />
-                            </div>
-                            <div class="space-y-2.5">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Company Website URL</label>
-                                <input type="text" name="DEVELOPED_BY_COMPANY_URL" value="{{ $settings['DEVELOPED_BY_COMPANY_URL'] ?? '' }}" class="luxury-input w-full font-bold h-10" placeholder="https://..." />
-                            </div>
-                        </div>
-                    </div>
                     <div class="pt-8 border-t border-ts/5">
                         <h3 class="text-xs font-semibold text-tp uppercase mb-6">System Behavior</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -366,51 +322,6 @@ $initialColors = $colorScheme['colors'] ?? $presets[0];
                 </div>
             @endif
 
-            <!-- Commission -->
-            <div x-show="tab === 'commission'" x-transition class="luxury-card p-10 space-y-10 bg-bs/20" x-cloak>
-                 <div class="max-w-2xl">
-                    <h3 class="text-base font-semibold text-tp uppercase mb-2">Default Commission Model</h3>
-                    <p class="text-[10px] font-semibold text-ts uppercase opacity-70 mb-5">Standard values for new property listings</p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <label class="text-[10px] font-semibold text-ts uppercase px-1">Policy Type</label>
-                            <div class="flex gap-4">
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="DEFAULT_COMMISSION_TYPE" value="PERCENTAGE" class="sr-only peer" {{ ($settings['DEFAULT_COMMISSION_TYPE'] ?? 'PERCENTAGE') === 'PERCENTAGE' ? 'checked' : '' }} />
-                                    <div class="p-6 rounded-2xl border-2 border-ts/5 text-center transition-all peer-checked:border-accent peer-checked:bg-accent/5 peer-checked:text-accent">
-                                        <i class="ri-percent-line text-2xl mb-2 block"></i>
-                                        <span class="text-[10px] font-semibold uppercase">Percentage</span>
-                                    </div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="DEFAULT_COMMISSION_TYPE" value="FIXED" class="sr-only peer" {{ ($settings['DEFAULT_COMMISSION_TYPE'] ?? 'PERCENTAGE') === 'FIXED' ? 'checked' : '' }} />
-                                    <div class="p-6 rounded-2xl border-2 border-ts/5 text-center transition-all peer-checked:border-accent peer-checked:bg-accent/5 peer-checked:text-accent">
-                                        <i class="ri-bank-card-line text-2xl mb-2 block"></i>
-                                        <span class="text-[10px] font-semibold uppercase">Fixed</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="space-y-6 pt-2">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Default Percentage (%)</label>
-                                <div class="relative">
-                                    <input type="number" step="0.01" name="DEFAULT_COMMISSION_VALUE" value="{{ $settings['DEFAULT_COMMISSION_VALUE'] ?? '1.00' }}" class="luxury-input w-full font-bold h-10 pr-12" />
-                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-ts font-bold text-xs">%</span>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-semibold text-ts uppercase px-1">Default Fixed Amount (PKR)</label>
-                                <div class="relative">
-                                    <input type="number" name="DEFAULT_COMMISSION_FIXED" value="{{ $settings['DEFAULT_COMMISSION_FIXED'] ?? '50000' }}" class="luxury-input w-full font-bold h-10 pr-14" />
-                                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-ts font-bold text-[10px]">PKR</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Appearance -->
             <div x-show="tab === 'appearance'" x-transition class="luxury-card p-10 space-y-10 bg-bs/20" x-cloak>

@@ -16,7 +16,7 @@ class DevTool {
                 case 'wipe':    DB::wipe(); self::say("Database wiped.", "ok"); break;
                 case 'seed':    DB::seed(); self::say("Data seeded.", "ok"); break;
                 case 'migrate': DB::migrate(); self::say("Migrations applied.", "ok"); break;
-                case 'reset':   DB::migrate(null, true); DB::seed(); self::say("Database reset.", "ok"); break;
+                case 'reset':   DB::migrate(true); DB::seed(); self::say("Database reset.", "ok"); break;
                 case 'status':
                 default:        self::showStatus(); break;
             }
@@ -39,6 +39,18 @@ class DevTool {
                 echo "<tr><td>$table</td><td style='font-weight:bold; color:#00ff41;'>$count</td></tr>";
             }
             echo "</tbody></table>";
+        }
+
+        self::say("Migration History", "header");
+        if (\Illuminate\Database\Capsule\Manager::schema()->hasTable('migrations')) {
+            $migrations = \App\DB::table('migrations')->orderBy('id', 'desc')->get();
+            echo "<table><thead><tr><th>Migration Name</th><th>Batch</th></tr></thead><tbody>";
+            foreach ($migrations as $m) {
+                echo "<tr><td>{$m->migration}</td><td style='color:#00ff41;'>{$m->batch}</td></tr>";
+            }
+            echo "</tbody></table>";
+        } else {
+            self::say("No migrations table found.", "warn");
         }
     }
 

@@ -1,35 +1,58 @@
 @extends('layout.app')
 @section ('content')
-<div class="max-w-6xl mx-auto p-6 py-12 space-y-12 animate-page-fade">
-    <!-- Welcome Section -->
-    <div class="text-center space-y-3">
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-accent/5 rounded-full text-accent mb-4 shadow-inner">
-            <i class="ri-rocket-2-fill text-4xl"></i>
+<div class="max-w-7xl mx-auto p-4 py-4 space-y-6 animate-page-fade">
+    <!-- Compact Welcome Section -->
+    <div class="flex items-center gap-4 border-b border-ts/5 pb-4">
+        <div class="flex-shrink-0 w-12 h-12 bg-accent/5 rounded-full text-accent flex items-center justify-center shadow-inner">
+            <i class="ri-rocket-2-fill text-2xl"></i>
         </div>
-        <h1 class="text-5xl font-black text-tp">Get Started</h1>
-        <p class="text-ts text-[11px] font-bold uppercase opacity-70">Welcome to {{ get_setting('APP_NAME', 'Mini Lara') }} Core</p>
+        <div>
+            <h1 class="text-2xl font-black text-tp leading-none">Dashboard</h1>
+            <p class="text-ts text-[10px] font-bold uppercase opacity-70 mt-1">System Overview & Quick Access</p>
+        </div>
     </div>
 
-    <!-- Charts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="luxury-card p-8">
-            <h2 class="text-[10px] font-bold text-ts uppercase mb-6">User Growth Trends</h2>
-            <div class="h-[250px]">
+    <!-- Compact Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="luxury-card p-5">
+            <h2 class="text-[13px] font-bold text-ts uppercase mb-4">User Growth</h2>
+            <div class="h-[360px]">
                 <canvas id="growthChart"></canvas>
             </div>
         </div>
-        <div class="luxury-card p-8 text-center">
-            <h2 class="text-[10px] font-bold text-ts uppercase mb-6">Activity Overview</h2>
-            <div class="h-[250px]">
+        <div class="luxury-card p-5">
+            <h2 class="text-[13px] font-bold text-ts uppercase mb-4">Activity</h2>
+            <div class="h-[360px]">
                 <canvas id="activityChart"></canvas>
             </div>
         </div>
+    </div>
+
+    <!-- Compact Print Demos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="{{ url('/print/reports/dummy') }}" target="_blank" class="luxury-card p-4 flex items-center gap-4 hover:border-accent hover:bg-accent/5 transition-all group border-ts/10">
+            <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                <i class="ri-file-list-3-line text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-[13px] font-bold text-tp">Business Report</h3>
+                <p class="text-[9px] text-ts uppercase font-semibold">Summary View</p>
+            </div>
+        </a>
+        <a href="{{ url('/print/single/dummy') }}" target="_blank" class="luxury-card p-4 flex items-center gap-4 hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all group border-ts/10">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
+                <i class="ri-file-paper-line text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-[13px] font-bold text-tp">Single Invoice</h3>
+                <p class="text-[9px] text-ts uppercase font-semibold">Receipt View</p>
+            </div>
+        </a>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Growth Chart
     new Chart(document.getElementById('growthChart'), {
         type: 'line',
         data: {
@@ -48,13 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             maintainAspectRatio: false, 
             plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.03)' }, ticks: { font: { size: 10 } } },
-                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.03)' }, ticks: { font: { size: 9 } } },
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } }
             }
         }
     });
 
-    // Activity Chart
     new Chart(document.getElementById('activityChart'), {
         type: 'doughnut',
         data: {
@@ -69,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             responsive: true, 
             maintainAspectRatio: false, 
             cutout: '75%', 
-            plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 11, weight: 'bold' } } } } 
+            plugins: { legend: { position: 'right', labels: { padding: 10, font: { size: 9, weight: 'bold' } } } } 
         }
     });
 });

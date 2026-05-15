@@ -13,6 +13,12 @@ use Illuminate\Support\Str;
  * Laravel-style global functions to minimize overhead and improve DX.
  */
 
+// Manual Load for Consolidated Core (Ultra-Mini)
+require_once __DIR__ . '/Framework.php';
+require_once __DIR__ . '/DB.php';
+require_once __DIR__ . '/Router.php';
+require_once __DIR__ . '/Console.php';
+
 if (!function_exists('url')) {
     function url($to = '') {
         return ($_ENV['ROOT_PATH'] ?? '') . $to;

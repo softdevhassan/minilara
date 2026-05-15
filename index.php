@@ -48,7 +48,6 @@ require_once __DIR__ . '/app/core/functions.php';
 try {
     App\App::getInstance()->boot();
 } catch (\Exception $e) {
-    // This will be caught by App's internal exception handler if it reached boot()
-    // But as a fallback:
-    die("Boot Error: " . $e->getMessage());
+    // If boot fails, use the framework's internal handler for professional rendering
+    App\App::getInstance()->handleException($e);
 }
