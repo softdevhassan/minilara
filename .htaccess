@@ -1,10 +1,16 @@
 RewriteEngine On
 
-# Block access to .env files
-RewriteRule ^\.env$ - [R=403,L,NC]
+# 1. Map root requests for static assets to app/public
+# If a file exists in app/public, serve it from there
+RewriteCond %{DOCUMENT_ROOT}/app/public/%{REQUEST_URI} -f
+RewriteRule ^(.*)$ app/public/$1 [L]
 
-# Send everything else to index.php if not a real file/folder
-# We don't need RewriteBase if index.php is in the same folder as .htaccess
+# 2. Block access to sensitive files
+RewriteRule ^\.env$ - [R=403,L,NC]
+RewriteRule ^composer\.(json|lock)$ - [R=403,L,NC]
+RewriteRule ^ml$ - [R=403,L,NC]
+
+# 3. Handle standard routing
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L,QSA]

@@ -84,6 +84,15 @@ class RunCommand extends Command {
     }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $port = $input->getOption('port');
+        $output->writeln("<info>Starting Development Stack (PHP + Vite)...</info>");
+        
+        // Start Vite in background
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            pclose(popen("start /B pnpm dev", "r"));
+        } else {
+            exec("pnpm dev > /dev/null 2>&1 &");
+        }
+        
         $output->writeln("<info>Server started at http://localhost:$port</info>");
         passthru("php -S localhost:$port");
         return Command::SUCCESS;

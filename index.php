@@ -5,11 +5,20 @@
  * Standardized Entry Point
  */
 
-// 0. PHP Dev Server Static File Support
+// 0. PHP Dev Server Static File Support (Smart Routing)
 if (php_sapi_name() === 'cli-server') {
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     if ($path !== '/' && file_exists(__DIR__ . $path) && is_file(__DIR__ . $path)) {
         return false;
+    }
+    // Check app/public for static files
+    $publicFile = __DIR__ . '/app/public' . $path;
+    if (file_exists($publicFile) && is_file($publicFile)) {
+        $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
+        $mimes = ['css'=>'text/css', 'js'=>'application/javascript', 'json'=>'application/json', 'png'=>'image/png', 'jpg'=>'image/jpeg', 'svg'=>'image/svg+xml', 'webp'=>'image/webp', 'ico'=>'image/x-icon'];
+        header('Content-Type: ' . ($mimes[$ext] ?? 'application/octet-stream'));
+        readfile($publicFile);
+        exit;
     }
 }
 
