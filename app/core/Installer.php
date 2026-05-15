@@ -9,7 +9,7 @@ class Installer {
     public static function install() {
         $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
 
-        $io->title("Mini Lara v1.3.2 - The Ultimate Industrial Edition");
+        $io->title("Mini Lara v1.3.3 - The Ultimate Industrial Edition");
         $io->note("Welcome to Mini Lara. Let's set up your new application.");
 
         // 1. Setup .env
@@ -43,7 +43,7 @@ class Installer {
                 
                 if ($io->confirm("Install default Schema & Seeding?", true)) {
                     $io->note("Applying database structure...");
-                    passthru("php ml db:manage --task=reset --no-interaction");
+                    self::runCommand("php ml db:manage --task=reset --no-interaction");
                 }
             } catch (\Exception $e) {
                 $io->error("DB Error: " . $e->getMessage());
@@ -53,7 +53,7 @@ class Installer {
         // 4. Package Installation
         if ($io->confirm("Run 'pnpm install' now?", false)) {
             $io->note("Installing frontend dependencies...");
-            passthru("pnpm install");
+            self::runCommand("pnpm install");
         }
 
         // 5. Generate Key
@@ -67,6 +67,29 @@ class Installer {
         $io->writeln("3. Login at <info>/auth/login</info> (admin / admin)");
         
         return 0;
+    }
+
+    private static function runCommand($cmd) {
+        $descriptors = [
+            0 => ['pipe', 'r'], // stdin
+            1 => ['pipe', 'w'], // stdout
+            2 => ['pipe', 'w'], // stderr
+        ];
+        
+        $process = proc_open($cmd, $descriptors, $pipes);
+        
+        if (is_resource($process)) {
+            while ($line = fgets($pipes[1])) {
+                echo $line;
+            }
+            while ($line = fgets($pipes[2])) {
+                echo $line;
+            }
+            fclose($pipes[0]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+        }
     }
 
     private static function updateEnv($key, $value) {

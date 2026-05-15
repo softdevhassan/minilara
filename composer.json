@@ -1,6 +1,6 @@
 {
   "name": "minilara/minilara",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Mini Lara Industrial - Ultra-lightweight, 7-file core PHP framework with Laravel 13 components, automated migrations, and high-contrast ledger printing.",
   "keywords": [
     "php framework",
@@ -16,7 +16,8 @@
   "type": "project",
   "license": "MIT",
   "bin": [
-    "ml"
+    "ml",
+    "bin/minilara"
   ],
   "require": {
     "php": "^8.3",
