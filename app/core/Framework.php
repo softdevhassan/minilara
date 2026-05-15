@@ -143,7 +143,7 @@ class View {
         if (($_ENV['APP_MODE'] ?? 'dev') === 'prod') {
             $out = preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/<!--(.|\s)*?-->/'], ['>', '<', '\\1', ''], $out);
         }
-        echo $out . "\n<!-- Built with Mini Lara v1.3.7 - https://github.com/softdevhassan/minilara -->";
+        echo $out . "\n<!-- Built with Mini Lara v1.3.8 - https://github.com/softdevhassan/minilara -->";
     }
     public static function alert($t, $m) { $_SESSION['alert'] = ['type' => $t, 'message' => $m]; }
     public static function renderAlert() {
