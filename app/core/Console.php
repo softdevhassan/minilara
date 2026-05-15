@@ -12,9 +12,10 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 
 class MigrateCommand extends Command {
-    protected static $defaultName = 'migrate';
     protected function configure() {
-        $this->setDescription('Run pending migrations')->addOption('fresh', null, InputOption::VALUE_NONE, 'Wipe DB first');
+        $this->setName('migrate')
+             ->setDescription('Run database migrations');
+        $this->addOption('fresh', null, InputOption::VALUE_NONE, 'Wipe and re-run all migrations');
     }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         if ($input->getOption('fresh')) { $output->writeln('<comment>Wiping...</comment>'); MigrationManager::wipe(); }
@@ -25,8 +26,10 @@ class MigrateCommand extends Command {
 }
 
 class SeedCommand extends Command {
-    protected static $defaultName = 'db:seed';
-    protected function configure() { $this->setDescription('Seed database'); }
+    protected function configure() {
+        $this->setName('db:seed')
+             ->setDescription('Seed database');
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $count = SeederManager::seed();
         $output->writeln("<info>Ran $count seeders.</info>");
@@ -35,8 +38,11 @@ class SeedCommand extends Command {
 }
 
 class MakeMigrationCommand extends Command {
-    protected static $defaultName = 'make:migration';
-    protected function configure() { $this->setDescription('Create migration')->addArgument('name', InputArgument::REQUIRED); }
+    protected function configure() {
+        $this->setName('make:migration')
+             ->setDescription('Create a new migration file');
+        $this->addArgument('name', InputArgument::REQUIRED, 'Migration name');
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $name = $input->getArgument('name'); $ts = date('Y_m_d_His'); $file = "{$ts}_{$name}.php";
         $path = BASE_PATH . "/app/database/migrations/$file";
@@ -48,8 +54,10 @@ class MakeMigrationCommand extends Command {
 }
 
 class GenerateKeyCommand extends Command {
-    protected static $defaultName = 'gen-keys';
-    protected function configure() { $this->setDescription('Generate encryption keys'); }
+    protected function configure() {
+        $this->setName('gen-keys')
+             ->setDescription('Generate encryption keys');
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $path = BASE_PATH . '/.env';
         if (!file_exists($path)) { $output->writeln('<error>.env not found</error>'); return Command::FAILURE; }
@@ -69,8 +77,11 @@ class GenerateKeyCommand extends Command {
 }
 
 class RunCommand extends Command {
-    protected static $defaultName = 'run';
-    protected function configure() { $this->setDescription('Run dev server')->addOption('port', 'p', InputOption::VALUE_REQUIRED, 'Port', 8000); }
+    protected function configure() {
+        $this->setName('run')
+             ->setDescription('Run dev server');
+        $this->addOption('port', 'p', InputOption::VALUE_REQUIRED, 'Port', 8000);
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $port = $input->getOption('port');
         $output->writeln("<info>Server started at http://localhost:$port</info>");
@@ -80,8 +91,11 @@ class RunCommand extends Command {
 }
 
 class DatabaseManager extends Command {
-    protected static $defaultName = 'db:manage';
-    protected function configure() { $this->setDescription('Manage DB')->addOption('task', 't', InputOption::VALUE_REQUIRED, 'Task'); }
+    protected function configure() {
+        $this->setName('db:manage')
+             ->setDescription('Manage database lifecycle (migrate, seed, reset)');
+        $this->addOption('task', null, InputOption::VALUE_REQUIRED, 'Task to run: status, migrate, seed, reset', 'status');
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $task = $input->getOption('task') ?: 'status';
         switch ($task) {
