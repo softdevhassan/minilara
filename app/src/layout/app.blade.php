@@ -106,16 +106,25 @@
     <meta name="description" content="{{ $settings['APP_TAGLINE'] ?? 'Professional Business Management System' }}" />
     <meta name="keywords" content="ERP, CRM, Business Management, PHP, Tailwind, AlpineJS" />
     <meta name="author" content="{{ $_ENV['DEVELOPER_NAME'] ?? '' }}" />
-    <meta name="generator" content="Mini Lara v1.3.9 (Industrial Edition)" />
+    <meta name="generator" content="Mini Lara v1.4.0 (Industrial Edition)" />
     <meta name="view-transition" content="same-origin" />
     <title>{{ $fullTitle }}</title>
     <link rel="icon" href="{{ $faviconData }}" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="{{ asset('/manifest.json') }}" />
     <meta name="theme-color" content="{{ $userColors['accent'] }}" />
     <script>
+        // Force unregister stale service workers on localhost to prevent ERR_FAILED
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
+                navigator.serviceWorker.register("{{ url('/sw.js') }}");
             });
         }
     </script>

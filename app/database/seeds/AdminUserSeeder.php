@@ -15,7 +15,9 @@ return new class extends Seeder {
 
         $this->table('settings')->insert([
             ['key' => 'APP_NAME', 'value1' => 'Mini Lara', 'created_at' => date('Y-m-d H:i:s')],
-            ['key' => 'APP_TAGLINE', 'value1' => 'Clean & Scalable System', 'created_at' => date('Y-m-d H:i:s')],
+            ['key' => 'APP_TAGLINE', 'value1' => 'Industrial Management System', 'created_at' => date('Y-m-d H:i:s')],
+            ['key' => 'APP_FAVICON', 'value1' => 'images/favicon.ico', 'created_at' => date('Y-m-d H:i:s')],
+            ['key' => 'APP_USE_DYNAMIC_FAVICON', 'value1' => '0', 'created_at' => date('Y-m-d H:i:s')],
         ]);
     }
 };

@@ -30,9 +30,9 @@ export default defineConfig({
   server: {
     strictPort: true,
     port: 5173,
-    host: true,
+    host: '127.0.0.1',
     hmr: {
-      host: 'localhost',
+      host: '127.0.0.1',
     },
     cors: true,
   },

@@ -89,7 +89,7 @@ class Auth {
     public static function checkAccess($route) {
         $route = '/' . trim($route, '/');
         $open = array_merge(['/auth/login', '/404'], array_map('trim', explode(',', $_ENV['OPEN_ROUTES'] ?? '')));
-        if (in_array($route, $open) || strpos($route, '/api/') === 0 || strpos($route, '/print/') === 0) return true;
+        if (in_array($route, $open) || strpos($route, '/api/') === 0 || strpos($route, '/print/') === 0 || strpos($route, '/app/public/') === 0) return true;
         if (!self::isLoggedIn()) return false;
         $user = self::user();
         if (in_array($user['username'] ?? '', array_map('trim', explode(',', $_ENV['SUPER_USERS'] ?? 'admin')))) return true;
@@ -143,7 +143,7 @@ class View {
         if (($_ENV['APP_MODE'] ?? 'dev') === 'prod') {
             $out = preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/<!--(.|\s)*?-->/'], ['>', '<', '\\1', ''], $out);
         }
-        echo $out . "\n<!-- Built with Mini Lara v1.3.9 - https://github.com/softdevhassan/minilara -->";
+        echo $out . "\n<!-- Built with Mini Lara v1.4.0 - https://github.com/softdevhassan/minilara -->";
     }
     public static function alert($t, $m) { $_SESSION['alert'] = ['type' => $t, 'message' => $m]; }
     public static function renderAlert() {
@@ -162,11 +162,11 @@ class Vite {
     public static function tags($entries): string {
         $entries = (array)$entries; $isHot = false;
         if (($_ENV['APP_MODE'] ?? 'dev') === 'dev') {
-            $fp = @fsockopen('localhost', 5173, $en, $es, 0.1); if ($fp) { $isHot = true; fclose($fp); }
+            $fp = @fsockopen('127.0.0.1', 5173, $en, $es, 0.1); if ($fp) { $isHot = true; fclose($fp); }
         }
         if ($isHot) {
-            $t = '<script type="module" src="http://localhost:5173/@vite/client"></script>';
-            foreach ($entries as $e) $t .= str_ends_with($e, '.css') ? '<link rel="stylesheet" href="http://localhost:5173/'.$e.'">' : '<script type="module" src="http://localhost:5173/'.$e.'"></script>';
+            $t = '<script type="module" src="http://127.0.0.1:5173/@vite/client"></script>';
+            foreach ($entries as $e) $t .= str_ends_with($e, '.css') ? '<link rel="stylesheet" href="http://127.0.0.1:5173/'.$e.'">' : '<script type="module" src="http://127.0.0.1:5173/'.$e.'"></script>';
             return $t;
         }
         $mP = BASE_PATH . '/app/public/build/.vite/manifest.json'; if (!file_exists($mP)) return '';

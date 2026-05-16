@@ -86,15 +86,15 @@ class RunCommand extends Command {
         $port = $input->getOption('port');
         $output->writeln("<info>Starting Development Stack (PHP + Vite)...</info>");
         
-        // Start Vite in background (popen avoids hanging on Windows)
+        // Start Vite in background (Same terminal, no extra window, silenced pipes)
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             pclose(popen("start /B pnpm dev > NUL 2>&1", "r"));
         } else {
             exec("pnpm dev > /dev/null 2>&1 &");
         }
         
-        $output->writeln("<info>Server started at http://localhost:$port</info>");
-        passthru("php -S localhost:$port");
+        $output->writeln("<info>Server started at http://127.0.0.1:$port</info>");
+        passthru("php -S 127.0.0.1:$port index.php");
         return Command::SUCCESS;
     }
 }

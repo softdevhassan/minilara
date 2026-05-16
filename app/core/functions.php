@@ -21,19 +21,30 @@ require_once __DIR__ . '/Console.php';
 
 if (!function_exists('url')) {
     function url($to = '') {
-        return ($_ENV['ROOT_PATH'] ?? '') . $to;
+        $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+        $base = ($scriptDir === '/' || $scriptDir === '\\') ? '' : $scriptDir;
+        return $base . '/' . ltrim($to, '/');
     }
 }
 
 if (!function_exists('asset')) {
     function asset($file) {
-        return url('/app/public/' . ltrim($file, '/'));
+        $file = ltrim($file, '/');
+        // Prevent double app/public if the database or dev already included it
+        if (strpos($file, 'app/public/') === 0) {
+            $file = substr($file, 11);
+        }
+        return url('app/public/' . ltrim($file, '/'));
     }
 }
 
 if (!function_exists('redirect')) {
     function redirect($to) {
-        header('Location: ' . url($to));
+        $url = url($to);
+        if (strpos($url, 'http') !== 0) {
+            $url = (($_SERVER['HTTPS'] ?? '') === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? '127.0.0.1:8000') . '/' . ltrim($url, '/');
+        }
+        header("Location: $url");
         exit;
     }
 }
